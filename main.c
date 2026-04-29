@@ -3,7 +3,7 @@
         2. allow the player to play against the computer
         3. keep track of scores and display final results at the end
         4. use a simple command line interface for interaction  
-        
+
 */
 
 
@@ -81,6 +81,35 @@ void display_final_results(int player_score, int computer_score) {
         printf("🤝 It's a tie!\n");
 }
 
+// battle animation
+void battle_animation() {
+    printf("\nPreparing battle");
+    fflush(stdout);
+
+    for (int i = 0; i < 3; i++) {
+        sleep(1);
+        printf(".");
+        fflush(stdout);
+    }
+
+    printf("\n");
+
+    char *frames[] = {
+        "[ Rock... ]",
+        "[ Paper... ]",
+        "[ Scissors... ]",
+        "   FIGHT! 💥"
+    };
+
+    for (int i = 0; i < 4; i++) {
+        printf("\r%s", frames[i]);
+        fflush(stdout);
+        sleep(1);
+    }
+
+    printf("\n\n");
+}
+
 // ----- main -----
 int main() {
     srand(time(0));
@@ -92,14 +121,15 @@ int main() {
     while (play_again == 'y' || play_again == 'Y') {
 
         printf("\n===== ROUND %d =====\n", round++);
+        battle_animation();
 
         int player = get_player_choice();
         int computer = get_computer_choice();
 
-        printf("You chose: ");
+        printf("You Summon !!: ");
         print_choice(player);
 
-        printf("\nComputer chose: ");
+        printf("\nChaos Monster SUmmons!!: ");
         print_choice(computer);
         printf("\n");
 
