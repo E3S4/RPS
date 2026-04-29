@@ -12,7 +12,9 @@
 #include <time.h>
 #include <unistd.h>
 
-// ----- prototypes -----
+// ----- prototypes ----
+int history[50];
+int history_index = 0;
 int get_player_choice();
 int get_computer_choice();
 int determine_winner(int player, int computer);
@@ -89,6 +91,29 @@ void display_final_results(int player_score, int computer_score) {
         printf("🤝 It's a tie!\n");
 }
 
+    // get player's choice history for past 5 moves and predict next move
+    void track_player_choice(int player_choice) {
+    history[history_index % 50] = player_choice;
+    history_index++;
+}
+
+int predict_player_move() {
+    int rock = 0, paper = 0, scissors = 0;
+
+    for (int i = 0; i < history_index && i < 50; i++) {
+        if (history[i] == 1) rock++;
+        else if (history[i] == 2) paper++;
+        else if (history[i] == 3) scissors++;
+    }
+
+    if (rock >= paper && rock >= scissors) return 1;
+    if (paper >= rock && paper >= scissors) return 2;
+    return 3;
+}2
+    
+
+
+
 // ----- battle animation -----
 void battle_animation() {
     printf("\nPreparing battle");
@@ -145,10 +170,17 @@ int main() {
         battle_animation();
 
         int player = get_player_choice();
-        int computer = get_computer_choice();
+      int predicted = predict_player_move();
+
+            // counter logic
+            int computer;
+            if (predicted == 1) computer = 2;
+            else if (predicted == 2) computer = 3;
+            else computer = 1;
 
         printf("\nYou Summon: ");
         print_choice(player);
+        track_player_choice(player);
 
         printf("\nEnemy Summons: ");
         print_choice(computer);
