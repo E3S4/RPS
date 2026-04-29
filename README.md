@@ -57,3 +57,31 @@ Input	Action
 ---
 * n	  Quit
 ---
+
+
+### Sample Result
+```
+===== FINAL SCORE =====
+Player: 4 | Computer: 6
+💀 Computer wins!
+```
+
+# yeah… I got cooked.
+---
+
+### Future Ideas
+* Difficulty modes (easy / hard AI)
+* Better prediction (Markov chain system)
+* ASCII fighting arena
+* Combo / streak system
+---
+
+### Built With
+* C (no external libraries except standard ones)
+* Pure terminal logic
+* A bit of chaos and bad decisions
+---
+
+### 📌 Note
+
+This project started as a simple Rock Paper Scissors game but slowly turned into a mini AI experiment + terminal game engine.
