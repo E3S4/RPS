@@ -52,5 +52,28 @@ void display_final_results(int player_score, int computer_score) {
 int main()
 {
     srand(time(0)); // seed the random number generator
+    int player_score = 0, computer_score = 0;
+    char play_again;
+    do {
+        int player_choice = get_player_choice();
+        int computer_choice = get_computer_choice();
+        printf("Computer chose: %d\n", computer_choice);
+        
+        int result = determine_winner(player_choice, computer_choice);
+        if (result == 1) {
+            printf("You win this round!\n");
+            player_score++;
+        } else if (result == -1) {
+            printf("Computer wins this round!\n");
+            computer_score++;
+        } else {
+            printf("This round is a tie!\n");
+        }
+        
+        printf("Do you want to play again? (y/n): ");
+        scanf(" %c", &play_again);
+    } while (play_again == 'y' || play_again == 'Y');
+    display_final_results(player_score, computer_score);
+
     return 0;
 }
