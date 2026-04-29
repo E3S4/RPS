@@ -1,91 +1,124 @@
-/*  goal :
-1. Create a Simple Rock Paper Scissors Game in C
-2. Use a simple command line interface to interact with the game
-3. Use random number generation to simulate the computer's choice
-4. Keep track of the player's score and the computer's score
-5. Allow the player to play multiple rounds until they choose to quit
-6. Display the final scores and declare the winner at the end of the game */
+/* goal:
+        1. create a simple rock-paper-scissors game in C
+        2. allow the player to play against the computer
+        3. keep track of scores and display final results at the end
+        4. use a simple command line interface for interaction  
+        
+*/
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-// -----Function prototypes-----
+// ----- prototypes -----
+int get_player_choice();
+int get_computer_choice();
+int determine_winner(int player, int computer);
+void display_final_results(int player_score, int computer_score);
+void print_choice(int choice);
 
-// the function to get the player's choice
+// ----- player input -----
 int get_player_choice() {
     int choice;
-    printf("Enter your choice (1 for Rock, 2 for Paper, 3 for Scissors): ");
-    scanf("%d", &choice);
-    return choice;
-}
-// generate the computer's choice
-int get_computer_choice() {
-    return rand() % 3 + 1; // generates a number between 1 and 3
-}
 
+    while (1) {
+        printf("\nEnter your choice:\n");
+        printf("1. Rock\n2. Paper\n3. Scissors\n> ");
 
-// determine the winner of a round
-int determine_winner(int player_choice, int computer_choice) {
-    if (player_choice == computer_choice) {
-        return 0; // tie
-    } else if ((player_choice == 1 && computer_choice == 3) ||
-                (player_choice == 2 && computer_choice == 1) ||
-                (player_choice == 3 && computer_choice == 2)) 
-                  return 1; // player wins
-    return -1; // computer wins
-}
-// function to store scores and display final results
-void display_final_results(int player_score, int computer_score) {
-    printf("Final Scores - Player: %d, Computer: %d\n", player_score, computer_score);
-    if (player_score > computer_score) {
-        printf("Congratulations! You win!\n");
-    } else if (player_score < computer_score) {
-        printf("Computer wins! Better luck next time.\n");
-    } else {
-        printf("It's a tie!\n");
+        if (scanf("%d", &choice) != 1) {
+            // clear bad input
+            while (getchar() != '\n');
+            printf("Invalid input. Try again.\n");
+            continue;
+        }
+
+        if (choice >= 1 && choice <= 3) {
+            return choice;
+        }
+
+        printf("Pick only 1, 2, or 3.\n");
     }
 }
 
-// draw menu box
+// ----- computer choice -----
+int get_computer_choice() {
+    return rand() % 3 + 1;
+}
 
-   void draw_menu_box() {
+// ----- show choice -----
+void print_choice(int choice) {
+    switch (choice) {
+        case 1: printf("Rock"); break;
+        case 2: printf("Paper"); break;
+        case 3: printf("Scissors"); break;
+    }
+}
 
-            printf("|");
-            for (int i = 0; i < 70; i++) printf("_");
-            printf("\n");
+// ----- winner logic -----
+int determine_winner(int player, int computer) {
+    if (player == computer) return 0;
 
-            printf("|");
-            for (int i = 0; i < 70; i++) printf("_");
-            printf("|\n");
-        }
+    if ((player == 1 && computer == 3) ||
+        (player == 2 && computer == 1) ||
+        (player == 3 && computer == 2)) {
+        return 1;
+    }
 
+    return -1;
+}
 
-// main function
-int main()
-{
-    srand(time(0)); // seed the random number generator
+// ----- final result -----
+void display_final_results(int player_score, int computer_score) {
+    printf("\n===== FINAL SCORE =====\n");
+    printf("Player: %d | Computer: %d\n", player_score, computer_score);
+
+    if (player_score > computer_score)
+        printf("🔥 You won the game!\n");
+    else if (computer_score > player_score)
+        printf("💀 Computer won. Skill issue (jk)\n");
+    else
+        printf("🤝 It's a tie!\n");
+}
+
+// ----- main -----
+int main() {
+    srand(time(0));
+
     int player_score = 0, computer_score = 0;
-    char play_again;
-    do {
-        int player_choice = get_player_choice();
-        int computer_choice = get_computer_choice();
-        printf("Computer chose: %d\n", computer_choice);
-        
-        int result = determine_winner(player_choice, computer_choice);
+    char play_again = 'y';
+    int round = 1;
+
+    while (play_again == 'y' || play_again == 'Y') {
+
+        printf("\n===== ROUND %d =====\n", round++);
+
+        int player = get_player_choice();
+        int computer = get_computer_choice();
+
+        printf("You chose: ");
+        print_choice(player);
+
+        printf("\nComputer chose: ");
+        print_choice(computer);
+        printf("\n");
+
+        int result = determine_winner(player, computer);
+
         if (result == 1) {
-            printf("You win this round!\n");
+            printf("🔥 You win this round!\n");
             player_score++;
         } else if (result == -1) {
-            printf("Computer wins this round!\n");
+            printf("💀 Computer wins this round!\n");
             computer_score++;
         } else {
-            printf("This round is a tie!\n");
+            printf("🤝 Round is a tie!\n");
         }
-        
-        printf("Do you want to play again? (y/n): ");
+
+        printf("\nPlay again? (y/n): ");
         scanf(" %c", &play_again);
-    } while (play_again == 'y' || play_again == 'Y');
+    }
+
     display_final_results(player_score, computer_score);
 
     return 0;
