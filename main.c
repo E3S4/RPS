@@ -5,7 +5,7 @@
         4. use a simple command line interface for interaction  
 
 */
-
+#define _POSIX_C_SOURCE 199309L
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -110,6 +110,25 @@ void battle_animation() {
 
     printf("\n\n");
 }
+void draw_box() {
+    int width = 8;
+
+    printf(" ");
+    for (int i = 0; i < width; i++) printf("_");
+    printf("\n");
+
+    printf("|");
+    for (int i = 0; i < width; i++) printf(" ");
+    printf("|\n");
+
+    printf("|");
+    for (int i = 0; i < width; i++) printf(" ");
+    printf("|\n");
+
+    printf("|");
+    for (int i = 0; i < width; i++) printf("_");
+    printf("|\n");
+}
 
 // ----- main -----
 int main() {
@@ -122,6 +141,7 @@ int main() {
     while (play_again == 'y' || play_again == 'Y') {
 
         printf("\n===== ROUND %d =====\n", round++);
+       draw_box();
         battle_animation();
 
         int player = get_player_choice();
