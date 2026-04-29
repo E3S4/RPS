@@ -37,3 +37,23 @@ It’s not real AI, but it *feels* like it is.
 ### Compile:
 ```bash
 gcc main.c -o rps
+```
+
+## run
+```
+./rps
+```
+### Controls
+---
+Input	Action
+---
+* 1	  Rock
+---
+* 2	  Paper
+---
+* 3	  Scissors 
+---
+* y	  Play again
+---
+* n	  Quit
+---
