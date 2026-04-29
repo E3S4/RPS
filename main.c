@@ -12,9 +12,7 @@
 #include <time.h>
 #include <unistd.h>
 
-// ----- prototypes ----
-int history[50];
-int history_index = 0;
+// ----- prototypes -----
 int get_player_choice();
 int get_computer_choice();
 int determine_winner(int player, int computer);
@@ -23,8 +21,14 @@ void print_choice(int choice);
 void battle_animation();
 void draw_ui(const char *title, const char *line1, const char *line2);
 void clear_screen();
+void track_player_choice(int player_choice);
+int predict_player_move();
 
-// ----- clear terminal -----
+// ----- memory for prediction -----
+int history[50];
+int history_index = 0;
+
+// ----- clear screen -----
 void clear_screen() {
     printf("\033[H\033[J");
 }
@@ -51,7 +55,7 @@ int get_player_choice() {
     }
 }
 
-// ----- computer choice -----
+// ----- computer fallback random -----
 int get_computer_choice() {
     return rand() % 3 + 1;
 }
@@ -91,12 +95,13 @@ void display_final_results(int player_score, int computer_score) {
         printf("🤝 It's a tie!\n");
 }
 
-    // get player's choice history for past 5 moves and predict next move
-    void track_player_choice(int player_choice) {
+// ----- store history -----
+void track_player_choice(int player_choice) {
     history[history_index % 50] = player_choice;
     history_index++;
 }
 
+// ----- prediction system -----
 int predict_player_move() {
     int rock = 0, paper = 0, scissors = 0;
 
@@ -109,10 +114,7 @@ int predict_player_move() {
     if (rock >= paper && rock >= scissors) return 1;
     if (paper >= rock && paper >= scissors) return 2;
     return 3;
-}2
-    
-
-
+}
 
 // ----- battle animation -----
 void battle_animation() {
@@ -143,7 +145,7 @@ void battle_animation() {
     printf("\n\n");
 }
 
-// ----- UI box -----
+// ----- UI -----
 void draw_ui(const char *title, const char *line1, const char *line2) {
     printf("____________________\n");
     printf("| %-18s |\n", title);
@@ -170,20 +172,24 @@ int main() {
         battle_animation();
 
         int player = get_player_choice();
-      int predicted = predict_player_move();
 
-            // counter logic
-            int computer;
-            if (predicted == 1) computer = 2;
-            else if (predicted == 2) computer = 3;
-            else computer = 1;
+        // store FIRST, then predict
+        track_player_choice(player);
+        int predicted = predict_player_move();
+
+        int computer;
+
+        // counter predicted player move
+        if (predicted == 1) computer = 2;
+        else if (predicted == 2) computer = 3;
+        else computer = 1;
 
         printf("\nYou Summon: ");
         print_choice(player);
-        track_player_choice(player);
 
         printf("\nEnemy Summons: ");
         print_choice(computer);
+
         printf("\n");
 
         int result = determine_winner(player, computer);
@@ -191,13 +197,13 @@ int main() {
         if (result == 1) {
             printf("🔥 You win this round!\n");
             player_score++;
-        } 
+        }
         else if (result == -1) {
-            printf("💀 Computer wins this round!\n");
+            printf("💀 Computer wins!\n");
             computer_score++;
-        } 
+        }
         else {
-            printf("🤝 Round is a tie!\n");
+            printf("🤝 Tie!\n");
         }
 
         draw_ui(
@@ -207,7 +213,6 @@ int main() {
             "Keep going..."
         );
 
-        // ----- validated replay input -----
         while (1) {
             printf("\nPlay again? (y/n): ");
             scanf(" %c", &play_again);
@@ -217,7 +222,7 @@ int main() {
                 break;
             }
 
-            printf("Only y or n bro 😭\n");
+            printf("Only y or n 😭\n");
         }
     }
 
