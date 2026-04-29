@@ -110,25 +110,16 @@ void battle_animation() {
 
     printf("\n\n");
 }
-void draw_box() {
-    int width = 8;
-
-    printf(" ");
-    for (int i = 0; i < width; i++) printf("_");
-    printf("\n");
-
-    printf("|");
-    for (int i = 0; i < width; i++) printf(" ");
-    printf("|\n");
-
-    printf("|");
-    for (int i = 0; i < width; i++) printf(" ");
-    printf("|\n");
-
-    printf("|");
-    for (int i = 0; i < width; i++) printf("_");
-    printf("|\n");
+// box ui
+void draw_ui(const char *title, const char *line1, const char *line2) {
+    printf("____________________\n");
+    printf("| %-18s |\n", title);
+    printf("|--------------------|\n");
+    printf("| %-18s |\n", line1);
+    printf("| %-18s |\n", line2);
+    printf("|____________________|\n");
 }
+
 
 // ----- main -----
 int main() {
@@ -141,7 +132,7 @@ int main() {
     while (play_again == 'y' || play_again == 'Y') {
 
         printf("\n===== ROUND %d =====\n", round++);
-       draw_box();
+       draw_ui();
         battle_animation();
 
         int player = get_player_choice();
