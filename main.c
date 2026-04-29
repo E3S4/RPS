@@ -47,6 +47,19 @@ void display_final_results(int player_score, int computer_score) {
     }
 }
 
+// draw menu box
+
+   void draw_menu_box() {
+
+            printf("|");
+            for (int i = 0; i < 70; i++) printf("_");
+            printf("\n");
+
+            printf("|");
+            for (int i = 0; i < 70; i++) printf("_");
+            printf("|\n");
+        }
+
 
 // main function
 int main()
