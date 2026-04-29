@@ -129,37 +129,48 @@ int main() {
     char play_again = 'y';
     int round = 1;
 
-    while (play_again == 'y' || play_again == 'Y') {
+   while (play_again == 'y' || play_again == 'Y') {
 
-        printf("\n===== ROUND %d =====\n", round++);
-       draw_ui();
-        battle_animation();
+    printf("\n===== ROUND %d =====\n", round++);
 
-        int player = get_player_choice();
-        int computer = get_computer_choice();
+    battle_animation();
 
-        printf("You Summon !!: ");
-        print_choice(player);
+    int player = get_player_choice();
+    int computer = get_computer_choice();
 
-        printf("\nChaos Monster SUmmons!!: ");
-        print_choice(computer);
-        printf("\n");
+    printf("\nYou Summon: ");
+    print_choice(player);
 
-        int result = determine_winner(player, computer);
+    printf("\nEnemy Summons: ");
+    print_choice(computer);
+    printf("\n");
 
-        if (result == 1) {
-            printf("🔥 You win this round!\n");
-            player_score++;
-        } else if (result == -1) {
-            printf("💀 Computer wins this round!\n");
-            computer_score++;
-        } else {
-            printf("🤝 Round is a tie!\n");
-        }
+    int result = determine_winner(player, computer);
 
-        printf("\nPlay again? (y/n): ");
-        scanf(" %c", &play_again);
+    if (result == 1) {
+        printf("🔥 You win this round!\n");
+        player_score++;
+    } 
+    else if (result == -1) {
+        printf("💀 Computer wins this round!\n");
+        computer_score++;
+    } 
+    else {
+        printf("🤝 Round is a tie!\n");
     }
+
+    // 🔥 FIXED UI CALL (NOW IT MAKES SENSE)
+    draw_ui(
+        "ROUND STATUS",
+        player_score > computer_score ? "You leading" :
+        player_score < computer_score ? "Enemy leading" : "Even fight",
+
+        "Fight continues..."
+    );
+
+    printf("\nPlay again? (y/n): ");
+    scanf(" %c", &play_again);
+}
 
     display_final_results(player_score, computer_score);
 
